@@ -1,6 +1,12 @@
 fetch('miserables.json')
   .then(res => res.json())
   .then(data => {
+    // original data and two non-reference copies
+    const datasets = [
+      data,
+      JSON.parse(JSON.stringify(data)),
+      JSON.parse(JSON.stringify(data))
+    ]
     const comps = [
       ForceGraph.ForceGraph2D,
       ForceGraph.ForceGraph3D,
@@ -10,7 +16,9 @@ fetch('miserables.json')
 
     ReactDOM.render(
       <div style={{ display: 'flex' }}>
-        {comps.map(Comp => <Comp width={compWidth} graphData={data} />)}
+        {comps.map((Comp, i) => (
+          <Comp width={compWidth} graphData={datasets[i]} />
+        ))}
       </div>,
       document.getElementById('graph')
     )
